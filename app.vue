@@ -1,33 +1,36 @@
 <template>
   <div>
     <h1>This or That</h1>
-    <div class="user-choices-box">
-      <h2>Choices by User</h2>
-      <div v-for="choice in choiceByUser" :key="choice._id">
-        <ul>
-          <li>{{ choice }}</li>
-        </ul>
-      </div>
-    </div>
-    <div class="choice-container">
+
+    <div class="choice-container" v-if="choice1">
       <img
         :src="choice1.first_choice_image_url"
         alt="Choice 1"
         class="choice-image"
-        @click="onSubmit(choice1, choice1.first_choice_title)"
+        @click="onSubmit(choice1, choice1?.first_choice_title)"
       />
-      <h2>{{ choice1.first_choice_title }}</h2>
+      <h2>{{ choice1?.first_choice_title }}</h2>
     </div>
-    <div class="choice-container">
+    <div class="choice-container" v-if="choice2">
       <img
-        :src="choice2.second_choice_image_url"
+        :src="choice2?.second_choice_image_url"
         alt="Choice 2"
         class="choice-image"
-        @click="onSubmit(choice1, choice2.second_choice_title)"
+        @click="onSubmit(choice1, choice2?.second_choice_title)"
       />
-      <h2>{{ choice2.second_choice_title }}</h2>
+      <h2>{{ choice2?.second_choice_title }}</h2>
     </div>
-    <button @click="getRandomChoices">Get New Choices</button>
+
+    <div class="result-container" v-if="!choice1 && !choice2">
+      <div class="user-choices-box">
+        <h2>Here are your choices :</h2>
+        <div v-for="choice in choiceByUser" :key="choice._id">
+          <ul>
+            <li>{{ choice }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,38 +56,31 @@ export default {
           second_choice_image_url: "",
         },
       ],
+      index: 0,
     };
   },
   methods: {
-    getRandomChoices() {
-      const randomIndex1 = Math.floor(Math.random() * this.choices.length);
-      const randomIndex2 = Math.floor(Math.random() * this.choices.length);
-
-      this.choice1 = this.choices[randomIndex1];
-      this.choice2 = this.choices[randomIndex1];
-      console.log(this.choice1, this.choice2);
+    getNextChoice() {
+      this.choice1 = this.choices[this.index];
+      this.choice2 = this.choices[this.index];
+      this.index++;
     },
 
     getChoices() {
       axios
-        .get(`${import.meta.env.VITE_BACK_API}/choice`)
+        .get(`https://this-or-that-backend.onrender.com/api/v1/choice`)
         .then((response) => {
           this.choices = response.data;
-          this.getRandomChoices();
+          this.getNextChoice();
         })
         .catch((error) => {
           console.log(error);
         });
     },
 
-    setChoiceByUser(choice) {
-      this.choiceByUser.push(choice);
-    },
-
-    onSubmit(choice, title) {
-      this.setChoiceByUser(title);
+    postChoice() {
       axios.post(
-        `${import.meta.env.VITE_BACK_API}/user/choice/${title}`,
+        `https://this-or-that-backend.onrender.com/api/v1/user/choice/${title}`,
         {
           choice: choice,
         },
@@ -94,12 +90,21 @@ export default {
           },
         }
       );
-      this.getRandomChoices();
+    },
+
+    setChoiceByUser(choice) {
+      this.choiceByUser.push(choice);
+    },
+
+    onSubmit(choice, title) {
+      this.setChoiceByUser(title);
+      console.log("choice : ", title);
+      // this.postChoice(choice)
+      this.getNextChoice();
     },
   },
   created() {
     this.getChoices();
-    this.getRandomChoices();
   },
 };
 </script>
