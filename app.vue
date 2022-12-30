@@ -1,24 +1,28 @@
 <template>
-  <div>
-    <h1>This or That</h1>
+  <div class="container">
+    <div class="row align-content-center" style="height: 100vh">
+      <h1 class="mb-5 text-center fw-bold fs-1">This or That</h1>
 
-    <div class="choice-container" v-if="choice1">
-      <img
-        :src="choice1.first_choice_image_url"
-        alt="Choice 1"
-        class="choice-image"
-        @click="onSubmit(choice1, choice1?.first_choice_title)"
-      />
-      <h2>{{ choice1?.first_choice_title }}</h2>
-    </div>
-    <div class="choice-container" v-if="choice2">
-      <img
-        :src="choice2?.second_choice_image_url"
-        alt="Choice 2"
-        class="choice-image"
-        @click="onSubmit(choice1, choice2?.second_choice_title)"
-      />
-      <h2>{{ choice2?.second_choice_title }}</h2>
+      <div class="d-flex flex-wrap">
+        <div class="d-flex align-items-center justify-content-center flex-column" v-if="choice1">
+          <img
+            :src="choice1.first_choice_image_url"
+            alt="Choice 1"
+            class="choice-image rounded mb-3"
+            @click="onSubmit(choice1, choice1?.first_choice_title)"
+          />
+          <h3 class="fs-3">{{ choice1?.first_choice_title }}</h3>
+        </div>
+        <div class="d-flex align-items-center justify-content-center flex-column" v-if="choice2">
+          <img
+            :src="choice2?.second_choice_image_url"
+            alt="Choice 2"
+            class="choice-image rounded mb-3"
+            @click="onSubmit(choice1, choice2?.second_choice_title)"
+          />
+          <h3 class="fs-3">{{ choice2?.second_choice_title }}</h3>
+        </div>
+      </div>
     </div>
 
     <div class="result-container" v-if="!choice1 && !choice2">
@@ -111,15 +115,26 @@ export default {
 </script>
 
 <style>
-.choice-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+@import url('https://fonts.cdnfonts.com/css/muli');
+
+body {
+  font-family: 'Muli', sans-serif;     
 }
 
 .choice-image {
-  width: 300px;
-  height: 300px;
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+}
+
+.flex-wrap {
+  justify-content: center;
+  row-gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .flex-wrap {
+    justify-content: space-between;
+  }
 }
 </style>
