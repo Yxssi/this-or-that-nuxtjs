@@ -4,7 +4,7 @@
       <h1 class="mb-5 text-center fw-bold fs-1">This or That</h1>
 
       <div class="d-flex flex-wrap">
-        <div class="d-flex align-items-center justify-content-center flex-column" v-if="choice1">
+        <div class="card border-0 text-center" v-if="choice1">
           <img
             :src="choice1.first_choice_image_url"
             alt="Choice 1"
@@ -13,7 +13,7 @@
           />
           <h3 class="fs-3">{{ choice1?.first_choice_title }}</h3>
         </div>
-        <div class="d-flex align-items-center justify-content-center flex-column" v-if="choice2">
+        <div class="card border-0 text-center" v-if="choice2">
           <img
             :src="choice2?.second_choice_image_url"
             alt="Choice 2"
@@ -135,6 +135,10 @@ body {
 @media (min-width: 768px) {
   .flex-wrap {
     justify-content: space-between;
+  }
+
+  .card {
+    cursor: pointer;
   }
 }
 </style>
