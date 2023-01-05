@@ -40,7 +40,7 @@
 
 <script>
 import axios from "axios";
-import 'bootstrap/dist/css/bootstrap.css'
+import "bootstrap/dist/css/bootstrap.css";
 export default {
   data() {
     return {
@@ -62,6 +62,7 @@ export default {
         },
       ],
       index: 0,
+      progressBarWidth: 25,
     };
   },
   methods: {
@@ -101,9 +102,21 @@ export default {
       this.choiceByUser.push(choice);
     },
 
+    increaseValueProgressBar() {
+      if (this.index / this.choices.length < 0.25) {
+        this.progressBarWidth = 25;
+      } else if (this.index / this.choices.length < 0.5) {
+        this.progressBarWidth = 50;
+      } else if (this.index / this.choices.length < 0.75) {
+        this.progressBarWidth = 75;
+      } else if (this.index / this.choices.length == 1) {
+        this.progressBarWidth = 100;
+      }
+    },
     onSubmit(choice, title) {
       this.setChoiceByUser(title);
-      console.log("choice : ", title);
+
+      this.increaseValueProgressBar();
       // this.postChoice(choice)
       this.getNextChoice();
     },
@@ -115,10 +128,10 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.cdnfonts.com/css/muli');
+@import url("https://fonts.cdnfonts.com/css/muli");
 
 body {
-  font-family: 'Muli', sans-serif;     
+  font-family: "Muli", sans-serif;
 }
 
 .choice-image {
