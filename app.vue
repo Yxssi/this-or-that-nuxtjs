@@ -117,7 +117,6 @@ export default {
       this.setChoiceByUser(title);
 
       this.increaseValueProgressBar();
-      // this.postChoice(choice)
       this.getNextChoice();
     },
   },
