@@ -69,7 +69,7 @@ export default {
 
     getChoices() {
       axios
-        .get(`http://localhost:5006/api/v1/choices`)
+        .get(`${import.meta.env.VITE_BACK_API}/choices`)
         .then((response) => {
           this.choices = response.data;
           this.getNextChoice();
@@ -82,7 +82,7 @@ export default {
     async getLeaderboard() {
       try {
         const { data } = await axios.get(
-          `http://localhost:5006/api/v1/votes/leaderboard`
+          `${import.meta.env.VITE_BACK_API}/votes/leaderboard`
         );
 
         return data;
@@ -95,7 +95,7 @@ export default {
       choice.votes = choice.votes + 1;
       const id = choice._id;
       choice.selectedChoice = selectedChoice;
-      axios.put(`http://localhost:5006/api/v1/choices/${id}`, choice, {
+      axios.put(`${import.meta.env.VITE_BACK_API}/choices/${id}`, choice, {
         headers: {
           "Content-Type": "application/json",
           "Accept-Encoding": "gzip,deflate,compress",
