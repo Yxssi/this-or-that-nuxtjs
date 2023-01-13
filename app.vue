@@ -1,4 +1,9 @@
 <template>
+  <div class="container" v-if="!choice1 && !choice2">
+    <h1 class="text-center">Merci pour vos votes !</h1>
+    <h1>Classement</h1>
+    <p v-for="item in leaderboard">{{ item.title }} - {{ item.count }} votes</p>
+  </div>
   <div class="container p-0 m-0">
     <div class="d-flex flex-wrap p-4 gap-4">
       <img
@@ -25,6 +30,11 @@ import "./assets/scss/style.scss";
 import "bootstrap/dist/css/bootstrap.css";
 
 export default {
+  computed: {
+    async choiceByUserComputed() {
+      return this.choiceByUser;
+    },
+  },
   data() {
     return {
       choiceByUser: [],
@@ -44,6 +54,8 @@ export default {
           second_choice_image_url: "",
         },
       ],
+      leaderboard: {},
+      selectedChoice: "",
       index: 0,
       progressBarWidth: 25,
     };
@@ -57,7 +69,7 @@ export default {
 
     getChoices() {
       axios
-        .get(`https://this-or-that-backend.onrender.com/api/v1/choice`)
+        .get(`${import.meta.env.VITE_BACK_API}/choices`)
         .then((response) => {
           this.choices = response.data;
           this.getNextChoice();
@@ -67,20 +79,28 @@ export default {
         });
     },
 
-    postChoice() {
-      axios.post(
-        `https://this-or-that-backend.onrender.com/api/v1/user/choice/${title}`,
-        {
-          choice: choice,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
+    async getLeaderboard() {
+      try {
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_BACK_API}/votes/leaderboard`
+        );
 
-            headers: { "Accept-Encoding": "gzip,deflate,compress" },
-          },
-        }
-      );
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    updateChoiceVote(choice, selectedChoice) {
+      choice.votes = choice.votes + 1;
+      const id = choice._id;
+      choice.selectedChoice = selectedChoice;
+      axios.put(`${import.meta.env.VITE_BACK_API}/choices/${id}`, choice, {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Encoding": "gzip,deflate,compress",
+        },
+      });
     },
 
     setChoiceByUser(choice) {
@@ -100,13 +120,15 @@ export default {
     },
     onSubmit(choice, title) {
       this.setChoiceByUser(title);
-
+      this.selectedChoice = title;
       this.increaseValueProgressBar();
       this.getNextChoice();
+      this.updateChoiceVote(choice, title);
     },
   },
-  created() {
+  async created() {
     this.getChoices();
+    this.leaderboard = await this.getLeaderboard();
   },
 };
 </script>
