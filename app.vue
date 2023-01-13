@@ -16,19 +16,7 @@
         @click="onSubmit(choice1, choice2?.second_choice_title)"
       />
     </div>
-
-    <div class="result-container" v-if="!choice1 && !choice2">
-      <div class="user-choices-box">
-        <h2>Here are your choices :</h2>
-        <div v-for="choice in choiceByUser" :key="choice._id">
-          <ul>
-            <li>{{ choice }}</li>
-          </ul>
-        </div>
-      </div>
-    </div>
   </div>
-
 </template>
 
 <script>
@@ -88,6 +76,8 @@ export default {
         {
           headers: {
             "Content-Type": "application/json",
+
+            headers: { "Accept-Encoding": "gzip,deflate,compress" },
           },
         }
       );
