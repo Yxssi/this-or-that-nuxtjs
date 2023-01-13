@@ -1,9 +1,11 @@
 <template>
   <div class="container p-0 m-0">
     <div class="container" v-if="!choice1 && !choice2">
-        <h1 class="text-center">Merci pour vos votes !</h1>
-        <h1>Classement</h1>
-        <p v-for="item in leaderboard" :key="item">{{ item.title }} - {{ item.count }} votes</p>
+      <h1 class="text-center">Merci pour vos votes !</h1>
+      <h1>Classement</h1>
+      <p v-for="item in leaderboard" :key="item">
+        {{ item.title }} - {{ item.count }} votes
+      </p>
     </div>
 
     <div class="d-flex flex-wrap p-3 gap-3" v-if="choice1 && choice2">
@@ -21,7 +23,9 @@
         v-if="choice2"
         @click="onSubmit(choice1, choice2?.second_choice_title)"
       />
-      <div class="position-absolute rounded-circle bg-white d-flex justify-content-center align-items-center m-auto border border-primary border-5">
+      <div
+        class="position-absolute rounded-circle bg-white d-flex justify-content-center align-items-center m-auto border border-primary border-5"
+      >
         <h1 class="text-primary mb-0">?</h1>
       </div>
     </div>
