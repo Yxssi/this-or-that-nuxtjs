@@ -1,28 +1,20 @@
 <template>
-  <div class="container">
-    <div class="row align-content-center" style="height: 100vh">
-      <h1 class="mb-5 text-center fw-bold fs-1">This or That</h1>
-
-      <div class="d-flex flex-wrap">
-        <div class="card border-0 text-center" v-if="choice1">
-          <img
-            :src="choice1.first_choice_image_url"
-            alt="Choice 1"
-            class="choice-image rounded mb-3"
-            @click="onSubmit(choice1, choice1?.first_choice_title)"
-          />
-          <h3 class="fs-3">{{ choice1?.first_choice_title }}</h3>
-        </div>
-        <div class="card border-0 text-center" v-if="choice2">
-          <img
-            :src="choice2?.second_choice_image_url"
-            alt="Choice 2"
-            class="choice-image rounded mb-3"
-            @click="onSubmit(choice1, choice2?.second_choice_title)"
-          />
-          <h3 class="fs-3">{{ choice2?.second_choice_title }}</h3>
-        </div>
-      </div>
+  <div class="container p-0 m-0">
+    <div class="d-flex flex-wrap p-4 gap-4">
+      <img
+        :src="choice1.first_choice_image_url"
+        alt="Choice 1"
+        class="col"
+        v-if="choice1"
+        @click="onSubmit(choice1, choice1?.first_choice_title)"
+      />
+      <img
+        :src="choice2?.second_choice_image_url"
+        alt="Choice 2"
+        class="col"
+        v-if="choice2"
+        @click="onSubmit(choice1, choice2?.second_choice_title)"
+      />
     </div>
 
     <div class="result-container" v-if="!choice1 && !choice2">
@@ -36,11 +28,14 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
 import axios from "axios";
+import "./assets/scss/style.scss";
 import "bootstrap/dist/css/bootstrap.css";
+
 export default {
   data() {
     return {
@@ -125,32 +120,3 @@ export default {
   },
 };
 </script>
-
-<style>
-@import url("https://fonts.cdnfonts.com/css/muli");
-
-body {
-  font-family: "Muli", sans-serif;
-}
-
-.choice-image {
-  width: 220px;
-  height: 220px;
-  object-fit: cover;
-}
-
-.flex-wrap {
-  justify-content: center;
-  row-gap: 20px;
-}
-
-@media (min-width: 768px) {
-  .flex-wrap {
-    justify-content: space-between;
-  }
-
-  .card {
-    cursor: pointer;
-  }
-}
-</style>
