@@ -1,6 +1,6 @@
 <template>
   <div class="container p-0 m-0">
-    <div class="d-flex flex-wrap p-4 gap-4" v-if="choice1 && choice2">
+    <div class="d-flex flex-wrap p-3 gap-3" v-if="choice1 && choice2">
       <img
         :src="choice1.first_choice_image_url"
         alt="Choice 1"
@@ -22,6 +22,7 @@
 
     <div class="container" v-if="!choice1 && !choice2">
       <h1>Top 10 voted images</h1>
+      
     </div>
   </div>
 </template>
