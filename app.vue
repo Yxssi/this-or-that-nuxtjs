@@ -74,7 +74,7 @@ export default {
 
     getChoices() {
       axios
-        .get(`https://this-or-that-backend.onrender.com/api/v1/choice`)
+        .get(`http://localhost:5006/api/v1/choices`)
         .then((response) => {
           this.choices = response.data;
           this.getNextChoice();
@@ -84,18 +84,15 @@ export default {
         });
     },
 
-    postChoice() {
-      axios.post(
-        `https://this-or-that-backend.onrender.com/api/v1/user/choice/${title}`,
-        {
-          choice: choice,
+    updateChoiceVote(choice, selectedChoice) {
+      choice.votes = choice.votes + 1;
+      const id = choice._id;
+      choice.selectedChoice = selectedChoice;
+      axios.put(`http://localhost:5006/api/v1/choices/${id}`, choice, {
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      });
     },
 
     setChoiceByUser(choice) {
@@ -115,9 +112,9 @@ export default {
     },
     onSubmit(choice, title) {
       this.setChoiceByUser(title);
-
       this.increaseValueProgressBar();
       this.getNextChoice();
+      this.updateChoiceVote(choice, title);
     },
   },
   created() {
