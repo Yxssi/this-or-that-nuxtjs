@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-0 m-0">
+  <div class="container p-0 m-0 d-contents">
     <div class="container" v-if="!choice1 && !choice2">
       <h1 class="text-center my-5">Merci pour vos votes !</h1>
       <h3 class="mb-3">Top 10</h3>
