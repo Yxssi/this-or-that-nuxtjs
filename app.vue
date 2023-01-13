@@ -1,9 +1,25 @@
 <template>
   <div class="container p-0 m-0">
     <div class="container" v-if="!choice1 && !choice2">
-        <h1 class="text-center">Merci pour vos votes !</h1>
-        <h1>Classement</h1>
-        <p v-for="item in leaderboard" :key="item">{{ item.title }} - {{ item.count }} votes</p>
+      <h1 class="text-center my-5">Merci pour vos votes !</h1>
+      <h3 class="mb-3">Top 10</h3>
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item d-flex justify-content-between align-items-start" v-for="item in leaderboard" :key="item">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">{{ item.title }}</div>
+          </div>
+          <span class="badge bg-primary rounded-pill">{{ item.count }} votes</span>
+        </li>
+      </ol>
+      <div class="mt-5 text-center">
+        <button class="btn btn-primary btn-lg" @click="reloadPage()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+          </svg>
+          Rejouer
+        </button>
+      </div>
     </div>
 
     <div class="d-flex flex-wrap p-3 gap-3" v-if="choice1 && choice2">
@@ -122,6 +138,7 @@ export default {
         this.progressBarWidth = 100;
       }
     },
+
     onSubmit(choice, title) {
       this.setChoiceByUser(title);
       this.selectedChoice = title;
@@ -129,6 +146,10 @@ export default {
       this.getNextChoice();
       this.updateChoiceVote(choice, title);
     },
+
+    reloadPage() {
+      window.location.reload();
+    }
   },
   async created() {
     this.getChoices();

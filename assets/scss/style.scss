@@ -1,9 +1,7 @@
 @import url("https://fonts.cdnfonts.com/css/muli");
-@import 'colors';
 
 body {
   font-family: "Muli", sans-serif;
-  // color: $oxford-blue !important;
 }
 
 .flex-wrap {
@@ -23,4 +21,9 @@ img {
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+.bi {
+  width: 1em;
+  height: 1em;
 }
